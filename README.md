@@ -60,7 +60,7 @@ We haven't released the training code yet.
 
 ## Visulaization
 
-!is](https://github.com/chengjc2019/EFHR/blob/main/pics/com_fair1m.png)
+![vis](https://github.com/chengjc2019/EFHR/blob/main/pics/com_fair1m.png)
 
 ## Acknowledgements
 
