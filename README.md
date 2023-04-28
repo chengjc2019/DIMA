@@ -34,7 +34,7 @@ cd EFHR
 
     You can put the pre-trained backbones into a selected path for testing.
 
-    We have also released our trained models for testing. You can download them from the link below.
+    We have also released trained models of baseline and our proposed method for testing. You can download them from the link below.
 
 -  [orcnn_EFHR_FAIR1M](https://drive.google.com/file/d/1iiNrLoqGTeCl6RfNkPkUp8cAx1od_Qzu/view?usp=share_link)
 - [orcnn_EFHR_MAR20](https://drive.google.com/file/d/1FkR3hpA8RS4-aA9gg3RnKskDKPvcDB1s/view?usp=share_link)
@@ -46,7 +46,7 @@ cd EFHR
 
 - [FAIR1M](https://www.gaofen-challenge.com/indexpage)
 
-  Run ```tools/data/fair1m/split/img_split.py``` to generate splited images and their annotations.
+  You need to run```tools/data/fair1m/split/img_split.py``` to generate splited images and their annotations.
 
 - [MAR20](https://gcheng-nwpu.github.io/)
 
@@ -74,7 +74,7 @@ Here are some great resources we benefit:
 
 ## Citation
 
-If you use this toolbox or benchmark in your research, please cite this project.
+If you make use of our repository in your research, please cite this project.
 
 ```bibtex
 @inproceedings{
