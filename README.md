@@ -2,7 +2,8 @@
 ## Introduction
 This repository contains the code for our paper **"Fine-Grained Object Detection via Exploiting Frequency and Hierachical Representation"**.
 
-[![model](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/rtmdet-an-empirical-study-of-designing-real/real-time-instance-segmentation-on-mscoco)](https://paperswithcode.com/sota/real-time-instance-segmentation-on-mscoco?p=rtmdet-an-empirical-study-of-designing-real)
+![model](https://github.com/chengjc2019/EFHR/blob/main/pics/model_v2.png)
+
 In this paper, we propose a novel CNN-based method for fine-grained object detection in remote sensing images.
 
 ## Getting Started
@@ -43,7 +44,7 @@ cd EFHR
 
 - [FAIR1M](https://www.gaofen-challenge.com/indexpage)
 
-  Run ```tools/data/fair1m/img_split.py``` to generate splited images and their annotations.
+  Run ```tools/data/fair1m/split/img_split.py``` to generate splited images and their annotations.
 
 - [MAR20](https://gcheng-nwpu.github.io/)
 
@@ -56,6 +57,10 @@ cd EFHR
 ## Training
 
 We haven't released the training code yet.
+
+## Visulaization
+
+!is](https://github.com/chengjc2019/EFHR/blob/main/pics/com_fair1m.png)
 
 ## Acknowledgements
 
