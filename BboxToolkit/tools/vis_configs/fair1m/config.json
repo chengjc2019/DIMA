@@ -1,0 +1,24 @@
+{
+    "ann_dir": "/home/chip/mmrotate/work_dirs/redet_trainval/test/benchmark_ss/txt/",
+    "save_dir": "/media/chip/A26A0E196A0DEABD/work_dirs/fair1m/test_vis/redet_trainval/obb_vis/no_text/",
+
+    "load_type": "fair1m",
+    "img_dir": "/home/chip/datasets/FAIR1M/raw/test/1_0/png",
+    "classes": "fair1m",
+    "prior_annfile": null,
+    "merge_type": "addition",
+    "load_nproc": 10,
+    "skip_empty": false,
+    "random_vis": false,
+    "ids": null,
+    "show_off": true,
+    "vis_nproc": 10,
+    "shown_btype": null,
+    "shown_names": "./vis_configs/fair1m/short_names.txt",
+    "score_thr": 0.8,
+    "colors": "./vis_configs/fair1m/colors.txt",
+    "thickness": 1.0,
+    "text_off": true,
+    "font_size": 10,
+    "wait_time": 0
+}

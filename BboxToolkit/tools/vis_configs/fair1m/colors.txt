@@ -1,0 +1,37 @@
+#FF8000 $Boeing737
+#937374 $Boeing747
+#00CC66 $Boeing777
+#00FF00 $Boeing787
+#A52A2A $C919
+#FF00FF $A220
+#FFFACD $A321
+#FFC1C1 $A330
+#FF0000 $A350
+#8A2BE2 $ARJ21
+#BDB76B $other airplane
+#00FFFF $Passenger Ship
+#008B8B $Motorboat
+#003399 $Fishing Boat
+#FFFF00 $Tugboat
+#EEE8AA $Engineering Ship
+#FFE4B5 $Liquid Cargo Ship
+#FF4500 $Dry Cargo Ship
+#556B2F $Warship
+#ADFF2F $other ship
+#7CFC00 $Small Car
+#006400 $Bus
+#CCFF99 $Cargo Truck
+#7FFFAA $Dump Truck
+#40E0D0 $Van
+#48D1CC $Trailer
+#66CCFF $Tractor
+#00BFFF $Excavator
+#CCCCFF $Truck Tractor
+#CCCC00 $other vehicle
+#BA55D3 $Basketball Court
+#FF99FF $Tennis Court
+#C71585 $Football Field
+#DC143C $Baseball Field
+#5F9EA0 $Intersection
+#CCFFFF $Roundabout
+#8B4513 $Bridge
