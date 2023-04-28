@@ -4,7 +4,7 @@ This repository contains the code for our paper **"Fine-Grained Object Detection
 
 ![model](https://github.com/chengjc2019/EFHR/blob/main/pics/model_v2.png)
 
-In this paper, we propose a novel CNN-based method for fine-grained object detection in remote sensing images.
+> **Abstract:** *Fine-grained object detection in remote sensing images aims at locating objects and determining fine-level categories that they belong. It has been considered as a very challenging task, due to the high inter-class similarity. Recently appeared few works tried to tackle this problem by designing complicated structures only in the spatial domain, which are confronted with the loss of information benefiting a lot to fine-grained tasks. In this paper, we propose a novel CNN-based method for fine-grained object detection in remote sensing images. In detail, we first design a simple but effective frequency feature enhancement mechanism (F-FEM) to introduce a coarse-to-fine classification pattern of human vision system into our task, which complement representation details through learning from original images and their auxiliary frequency counterparts simultaneously. Then we present a module named Hierarchical Classification Paradigm (HCP), which constructs the inter-hierarchy relationships between coarse- and fine-level features with multi-granularity classification results and further highlights hard samples to keep consistency. Experiments on FAIR1M and MAR20 datasets demonstrate that our approach is superior to the current CNN-based state-of-the-art methods. It is also compatible and could be easily integrated in many object detectors. Qualitative results are presented for better understanding of our method.*
 
 ## Getting Started
 
