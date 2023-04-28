@@ -42,6 +42,8 @@ cd EFHR
 
 2. Datasets
 
+    Download the two FGOD datasets from the links below and put them in a data directory.
+
 - [FAIR1M](https://www.gaofen-challenge.com/indexpage)
 
   Run ```tools/data/fair1m/split/img_split.py``` to generate splited images and their annotations.
