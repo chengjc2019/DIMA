@@ -119,6 +119,8 @@ class FGALOrientedStandardRoIHead(RotatedStandardRoIHead):
 
     def forward_train1(self,
                       x,
+                      x_l,
+                      x_h,
                       img_metas,
                       proposal_list,
                       gt_bboxes,
@@ -173,7 +175,7 @@ class FGALOrientedStandardRoIHead(RotatedStandardRoIHead):
         losses = dict()
         # bbox head forward and loss
         if self.with_bbox:
-            bbox_results = self._bbox_forward_train(x, sampling_results, dom_sampling_results,
+            bbox_results = self._bbox_forward_train1(x,x_l,x_h, sampling_results, dom_sampling_results,
                                                     gt_bboxes, gt_dom_labels, gt_labels,
                                                     img_metas)
             losses.update(bbox_results['loss_bbox'])
@@ -209,7 +211,32 @@ class FGALOrientedStandardRoIHead(RotatedStandardRoIHead):
         bbox_results.update(loss_bbox=loss_bbox)
         return bbox_results
 
-    def _bbox_forward1(self, x, rois):
+    def _bbox_forward_train1(self, x,x_l,x_h, sampling_results, dom_sampling_results,
+                            gt_bboxes, gt_dom_labels, gt_labels,
+                            img_metas):
+        rois = rbbox2roi([res.bboxes for res in sampling_results])
+        bbox_results = self._bbox_forward1(x,x_l,x_h, rois)
+
+        bbox_targets = self.bbox_head.get_targets(sampling_results, gt_bboxes,
+                                                  gt_labels, self.train_cfg)
+        com_bbox_targets = copy.deepcopy(bbox_targets)
+
+        for i in range(bbox_results['coarse_cls_score'].shape[0]):
+            if torch.argmax(bbox_results['coarse_cls_score'][i]) != torch.argmax(bbox_results['fine_cls_score'][i]):
+                # a = com_bbox_targets[1][i]
+                com_bbox_targets[1][i] = torch.tensor([2.0]).to(device=x[0].device)
+                if torch.argmax(bbox_results['coarse_cls_score1'][i]) != torch.argmax(
+                        bbox_results['fine_cls_score1'][i]):
+                    com_bbox_targets[1][i] = torch.tensor([4.0]).to(device=x[0].device)
+
+        loss_bbox = self.bbox_head.loss(bbox_results['cls_score'],
+                                        bbox_results['bbox_pred'], rois,
+                                        *bbox_targets)
+
+        bbox_results.update(loss_bbox=loss_bbox)
+        return bbox_results
+
+    def _bbox_forward1(self, x,x_l,x_h, rois):
         """Box head forward function used in both training and testing.
 
         Args:
@@ -221,8 +248,18 @@ class FGALOrientedStandardRoIHead(RotatedStandardRoIHead):
         """
         bbox_feats = self.bbox_roi_extractor(
             x[:self.bbox_roi_extractor.num_inputs], rois)
+        bbox_feats_l = self.bbox_roi_extractor(
+            x_l[:self.bbox_roi_extractor.num_inputs], rois)
+        bbox_feats_h = self.bbox_roi_extractor(
+            x_h[:self.bbox_roi_extractor.num_inputs], rois)
         if self.with_shared_head:
             bbox_feats = self.shared_head(bbox_feats)
+            bbox_feats_l = self.shared_head(bbox_feats_l)
+            bbox_feats_h = self.shared_head(bbox_feats_h)
+        coarse_cls_score, fine_cls_score, coarse_cls_score1, fine_cls_score1, cls_score, bbox_pred = self.bbox_head(
+            bbox_feats)
+        coarse_cls_score, fine_cls_score, coarse_cls_score1, fine_cls_score1, cls_score, bbox_pred = self.bbox_head(
+            bbox_feats)
         coarse_cls_score, fine_cls_score, coarse_cls_score1, fine_cls_score1, cls_score, bbox_pred = self.bbox_head(
             bbox_feats)
 

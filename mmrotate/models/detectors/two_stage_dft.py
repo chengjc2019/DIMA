@@ -137,29 +137,29 @@ class RotatedTwoStageDetectorDFT(RotatedBaseDetector):
                     **kwargs)
                 losses_o.update(rpn_losses_o)
 
-                rpn_losses_l, proposal_list_l = self.rpn_head.forward_train(
-                    x_l,
-                    img_metas,
-                    gt_bboxes,
-                    gt_labels=None,
-                    gt_bboxes_ignore=gt_bboxes_ignore,
-                    proposal_cfg=proposal_cfg,
-                    **kwargs)
-                losses_l.update(rpn_losses_l)
-
-                rpn_losses_h, proposal_list_h = self.rpn_head.forward_train(
-                    x_h,
-                    img_metas,
-                    gt_bboxes,
-                    gt_labels=None,
-                    gt_bboxes_ignore=gt_bboxes_ignore,
-                    proposal_cfg=proposal_cfg,
-                    **kwargs)
-                losses_h.update(rpn_losses_h)
+                # rpn_losses_l, proposal_list_l = self.rpn_head.forward_train(
+                #     x_l,
+                #     img_metas,
+                #     gt_bboxes,
+                #     gt_labels=None,
+                #     gt_bboxes_ignore=gt_bboxes_ignore,
+                #     proposal_cfg=proposal_cfg,
+                #     **kwargs)
+                # losses_l.update(rpn_losses_l)
+                #
+                # rpn_losses_h, proposal_list_h = self.rpn_head.forward_train(
+                #     x_h,
+                #     img_metas,
+                #     gt_bboxes,
+                #     gt_labels=None,
+                #     gt_bboxes_ignore=gt_bboxes_ignore,
+                #     proposal_cfg=proposal_cfg,
+                #     **kwargs)
+                # losses_h.update(rpn_losses_h)
             else:
                 proposal_list_o = proposals
                 proposal_list_l = proposals
-                # proposal_list_h = proposals
+                proposal_list_h = proposals
 
             roi_losses_o = self.roi_head.forward_train(x, img_metas, proposal_list_o,
                                                        gt_bboxes, gt_labels,
