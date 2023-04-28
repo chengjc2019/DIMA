@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotation>
+	<source>
+		<filename>xxxx.tif</filename>
+		<origin>GF2/GF3</origin>
+	</source>
+	<research>
+		<version>1.0</version>
+		<provider>FAIR1M</provider>
+		<author>Cyber</author>
+		<pluginname>FAIR1M</pluginname>
+		<pluginclass>object detection</pluginclass>
+		<time>2021-07-21</time>
+	</research>
+	<objects>
+		<object>
+			<coordinate>pixel</coordinate>
+			<type>rectangle</type>
+			<description>None</description>
+			<possibleresult>
+				<name>other-vehicle</name>
+				<probability>0.000001</probability>
+			</possibleresult>
+			<points>
+				<point>674,414</point>
+				<point>666,331</point>
+				<point>758,322</point>
+				<point>766,405</point>
+				<point>674,414</point>
+			</points>
+		</object>
+	</objects>
+</annotation>

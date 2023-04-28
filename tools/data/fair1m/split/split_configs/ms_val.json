@@ -1,0 +1,30 @@
+{
+  "nproc": 10,
+  "img_dirs": [
+    "/home/chip/datasets/FAIR1M/raw/validation/images/"
+  ],
+  "ann_dirs": [
+    "/home/chip/datasets/FAIR1M/raw/validation/labelTxt/"
+  ],
+  "sizes": [
+    1024
+  ],
+  "gaps": [
+    512
+  ],
+  "rates": [
+    0.5,
+    1.0,
+    1.5
+  ],
+  "img_rate_thr": 0.6,
+  "iof_thr": 0.7,
+  "no_padding": false,
+  "padding_value": [
+    104,
+    116,
+    124
+  ],
+  "save_dir": "/home/chip/datasets/FAIR1M/mmrotate/split_ms_fair1m/val/",
+  "save_ext": ".png"
+}
