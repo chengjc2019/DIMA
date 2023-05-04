@@ -59,7 +59,7 @@ model = dict(
             fc_out_channels=1024,
             roi_feat_size=7,
             # num_classes=15,
-            num_classes=dict(dom=5,sub=37),
+            num_classes=dict(dom=5, sub=37),
             bbox_coder=dict(
                 type='DeltaXYWHAOBBoxCoder',
                 angle_range=angle_version,

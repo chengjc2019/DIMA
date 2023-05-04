@@ -118,71 +118,18 @@ class FGALOrientedStandardRoIHead(RotatedStandardRoIHead):
         return losses
 
     def forward_train1(self,
-                      x,
-                      x_l,
-                      x_h,
-                      img_metas,
-                      proposal_list,
-                      gt_bboxes,
-                      gt_labels,
-                      gt_dom_labels,
-                      gt_bboxes_ignore=None,
-                      gt_masks=None):
-        if self.with_bbox:
-
-            num_imgs = len(img_metas)
-            if gt_bboxes_ignore is None:
-                gt_bboxes_ignore = [None for _ in range(num_imgs)]
-            sampling_results = []
-            dom_sampling_results = []
-            for i in range(num_imgs):
-                assign_result = self.bbox_assigner.assign(
-                    proposal_list[i], gt_bboxes[i], gt_bboxes_ignore[i],
-                    gt_labels[i])
-
-                dom_assign_result = self.bbox_assigner.assign(
-                    proposal_list[i], gt_bboxes[i],
-                    gt_bboxes_ignore[i], gt_dom_labels[i])
-
-                sampling_result = self.bbox_sampler.sample(
-                    assign_result,
-                    proposal_list[i],
-                    gt_bboxes[i],
-                    gt_labels[i],
-                    feats=[lvl_feat[i][None] for lvl_feat in x])
-
-                dom_sampling_result = self.bbox_sampler.sample(
-                    dom_assign_result,
-                    proposal_list[i],
-                    gt_bboxes[i],
-                    gt_dom_labels[i],
-                    feats=[lvl_feat[i][None] for lvl_feat in x])
-
-                if gt_bboxes[i].numel() == 0:
-                    sampling_result.pos_gt_bboxes = gt_bboxes[i].new(
-                        (0, gt_bboxes[0].size(-1))).zero_()
-                    dom_sampling_result.pos_gt_bboxes = gt_bboxes[i].new_zeros(
-                        (0, gt_bboxes[0].size(-1)))
-                else:
-                    sampling_result.pos_gt_bboxes = \
-                        gt_bboxes[i][sampling_result.pos_assigned_gt_inds, :]
-                    dom_sampling_result.pos_gt_bboxes = \
-                        gt_bboxes[i][dom_sampling_result.pos_assigned_gt_inds, :]
-
-                sampling_results.append(sampling_result)
-                dom_sampling_results.append(dom_sampling_result)
-
-        losses = dict()
-        # bbox head forward and loss
-        if self.with_bbox:
-            bbox_results = self._bbox_forward_train1(x,x_l,x_h, sampling_results, dom_sampling_results,
-                                                    gt_bboxes, gt_dom_labels, gt_labels,
-                                                    img_metas)
-            losses.update(bbox_results['loss_bbox'])
-            if 'coarse_loss_box' in bbox_results:
-                losses["coarse_loss_cls"] = bbox_results['coarse_loss_box'].pop('loss_cls')
-            if 'fine_loss_box' in bbox_results:
-                losses["fine_loss_cls"] = bbox_results['fine_loss_box'].pop('loss_cls')
+                       x,
+                       x_l,
+                       x_h,
+                       img_metas,
+                       proposal_list,
+                       gt_bboxes,
+                       gt_labels,
+                       gt_dom_labels,
+                       gt_bboxes_ignore=None,
+                       gt_masks=None):
+        losses = ()
+        # to be continued
 
         return losses
 
@@ -211,65 +158,18 @@ class FGALOrientedStandardRoIHead(RotatedStandardRoIHead):
         bbox_results.update(loss_bbox=loss_bbox)
         return bbox_results
 
-    def _bbox_forward_train1(self, x,x_l,x_h, sampling_results, dom_sampling_results,
-                            gt_bboxes, gt_dom_labels, gt_labels,
-                            img_metas):
-        rois = rbbox2roi([res.bboxes for res in sampling_results])
-        bbox_results = self._bbox_forward1(x,x_l,x_h, rois)
+    def _bbox_forward_train1(self, x, x_l, x_h, sampling_results, dom_sampling_results,
+                             gt_bboxes, gt_dom_labels, gt_labels,
+                             img_metas):
+        # to be continued
+        bbox_results = ()
 
-        bbox_targets = self.bbox_head.get_targets(sampling_results, gt_bboxes,
-                                                  gt_labels, self.train_cfg)
-        com_bbox_targets = copy.deepcopy(bbox_targets)
-
-        for i in range(bbox_results['coarse_cls_score'].shape[0]):
-            if torch.argmax(bbox_results['coarse_cls_score'][i]) != torch.argmax(bbox_results['fine_cls_score'][i]):
-                # a = com_bbox_targets[1][i]
-                com_bbox_targets[1][i] = torch.tensor([2.0]).to(device=x[0].device)
-                if torch.argmax(bbox_results['coarse_cls_score1'][i]) != torch.argmax(
-                        bbox_results['fine_cls_score1'][i]):
-                    com_bbox_targets[1][i] = torch.tensor([4.0]).to(device=x[0].device)
-
-        loss_bbox = self.bbox_head.loss(bbox_results['cls_score'],
-                                        bbox_results['bbox_pred'], rois,
-                                        *bbox_targets)
-
-        bbox_results.update(loss_bbox=loss_bbox)
+        bbox_results.update()
         return bbox_results
 
-    def _bbox_forward1(self, x,x_l,x_h, rois):
-        """Box head forward function used in both training and testing.
+    def _bbox_forward1(self, x, x_l, x_h, rois):
 
-        Args:
-            x (list[Tensor]): list of multi-level img features.
-            rois (list[Tensors]): list of region of interests.
-
-        Returns:
-            dict[str, Tensor]: a dictionary of bbox_results.
-        """
-        bbox_feats = self.bbox_roi_extractor(
-            x[:self.bbox_roi_extractor.num_inputs], rois)
-        bbox_feats_l = self.bbox_roi_extractor(
-            x_l[:self.bbox_roi_extractor.num_inputs], rois)
-        bbox_feats_h = self.bbox_roi_extractor(
-            x_h[:self.bbox_roi_extractor.num_inputs], rois)
-        if self.with_shared_head:
-            bbox_feats = self.shared_head(bbox_feats)
-            bbox_feats_l = self.shared_head(bbox_feats_l)
-            bbox_feats_h = self.shared_head(bbox_feats_h)
-        coarse_cls_score, fine_cls_score, coarse_cls_score1, fine_cls_score1, cls_score, bbox_pred = self.bbox_head(
-            bbox_feats)
-        coarse_cls_score, fine_cls_score, coarse_cls_score1, fine_cls_score1, cls_score, bbox_pred = self.bbox_head(
-            bbox_feats)
-        coarse_cls_score, fine_cls_score, coarse_cls_score1, fine_cls_score1, cls_score, bbox_pred = self.bbox_head(
-            bbox_feats)
-
-        bbox_results = dict(coarse_cls_score=coarse_cls_score,
-                            fine_cls_score=fine_cls_score,
-                            coarse_cls_score1=coarse_cls_score1,
-                            fine_cls_score1=fine_cls_score1,
-                            cls_score=cls_score,
-                            bbox_pred=bbox_pred,
-                            bbox_feats=bbox_feats)
+        bbox_results = dict()
         return bbox_results
 
     def simple_test_bboxes(self,
@@ -298,7 +198,8 @@ class FGALOrientedStandardRoIHead(RotatedStandardRoIHead):
         """
 
         rois = rbbox2roi(proposals)
-        bbox_results = self._bbox_forward1(x, rois)
+        bbox_results = self._bbox_forward(x, rois)
+        # bbox_results = self._bbox_forward1(x, rois)
         img_shapes = tuple(meta['img_shape'] for meta in img_metas)
         scale_factors = tuple(meta['scale_factor'] for meta in img_metas)
 
